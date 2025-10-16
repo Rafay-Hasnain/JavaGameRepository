@@ -26,13 +26,16 @@ public class MazeRunner {
                 { '#', '#', '#', '#', '#', '#', '#' }
 
         };
+
     }
 
     public void printMaze() { // Void because it doesn't return anything.
 
         for (int i = 0; i <= MazeArray.length - 1; i++) { // Need to wite int otherwise java won't know what the
-                                                          // variables i and j are.
-            for (int j = 0; j <= MazeArray.length - 1; j++) {
+                                                          // variables i and j are. It MazeArray.length provides the
+                                                          // number of rows.
+            for (int j = 0; j <= MazeArray[i].length - 1; j++) { // This MazeArray[i].length will fetch the number of
+                                                                 // columns for that particular row.
                 System.out.print(MazeArray[i][j]);
 
             }
@@ -40,9 +43,19 @@ public class MazeRunner {
         }
     }
 
-=======
-public class MazeRunner {
->>>>>>> cf64832ac51e029fefbef8a23db6777ab8b80ec9
+    public String isValidMove(int newRow, int newCol) {
+
+        if (newRow < 0 || newRow >= MazeArray.length || newCol < 0 || newCol >= MazeArray[newRow].length) { //newRow will get the number of columns for that particular row. 
+            return "Out of bound";
+        }
+        else if (MazeArray[newRow][newCol] == '#') {
+            return "Hit a wall";
+        }
+        else {
+            return "Move allowed"; 
+        }
+    }
+
     public static void main(String[] args) throws Exception {
 
         Scanner myObj = new Scanner(System.in); // Scanner is a class so we need to make an object first to use it. It
@@ -51,7 +64,10 @@ public class MazeRunner {
 
         // Making the main menu:
         System.out.print("Enter a choice:");
-        int choice = myObj.nextInt();
+        int choice = myObj.nextInt(); // Reads the number.
+        myObj.nextLine(); // Reads the leftover newline (we need to erase it) so that String LetterChoice
+                          // = myObj.nextLine(); reads the actual letter instead of the new line which
+                          // will result in invalid entry (notebook analogy).
 
         if (choice == 1) {
             System.out.print("Play Game");
@@ -66,12 +82,30 @@ public class MazeRunner {
         } else {
             System.out.print("You entered the wrong value!");
         }
-<<<<<<< HEAD
+
+        char NewPosition;
         MazeRunner game = new MazeRunner();
-        game.inititalizeMaze();
-        game.printMaze();
-=======
->>>>>>> cf64832ac51e029fefbef8a23db6777ab8b80ec9
+
+        // Enter a letter for the next move:
+        System.out.print("Enter a letter to move character:");
+        String LetterChoice = myObj.nextLine();
+
+        if (LetterChoice.toUpperCase().equals("W")) {
+            game.inititalizeMaze(); // We need to initialize the maze first as it needs to exist before we can make
+                                    // a move.
+            NewPosition = game.MazeArray[game.PlayerRow - 1][game.PlayerColumn]; // Up
+        } else if (LetterChoice.toUpperCase().equals("A")) {
+            game.inititalizeMaze();
+            NewPosition = game.MazeArray[game.PlayerRow][game.PlayerColumn - 1]; // Left
+        } else if (LetterChoice.toUpperCase().equals("S")) {
+            game.inititalizeMaze();
+            NewPosition = game.MazeArray[game.PlayerRow + 1][game.PlayerColumn]; // Down
+        } else if (LetterChoice.toUpperCase().equals("D")) {
+            game.inititalizeMaze();
+            NewPosition = game.MazeArray[game.PlayerRow][game.PlayerColumn + 1]; // Right
+        } else {
+            System.out.print("Invalid Entry");
+        }
 
     }
 }
