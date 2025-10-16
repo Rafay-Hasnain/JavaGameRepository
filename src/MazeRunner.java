@@ -1,5 +1,6 @@
 import java.util.Scanner; //The Scanner class which is inside the java.util library is for taking input from the users. For example, reading numbers/strings etc. 
 
+<<<<<<< HEAD
 //Static (Variable or Method) = Belongs to the class itself e.g main.
 //Non Static (Variable or Method) = Belongs to an object (instance) of the class when we create it using new. 
 public class MazeRunner {
@@ -39,6 +40,9 @@ public class MazeRunner {
         }
     }
 
+=======
+public class MazeRunner {
+>>>>>>> cf64832ac51e029fefbef8a23db6777ab8b80ec9
     public static void main(String[] args) throws Exception {
 
         Scanner myObj = new Scanner(System.in); // Scanner is a class so we need to make an object first to use it. It
@@ -62,9 +66,12 @@ public class MazeRunner {
         } else {
             System.out.print("You entered the wrong value!");
         }
+<<<<<<< HEAD
         MazeRunner game = new MazeRunner();
         game.inititalizeMaze();
         game.printMaze();
+=======
+>>>>>>> cf64832ac51e029fefbef8a23db6777ab8b80ec9
 
     }
 }
