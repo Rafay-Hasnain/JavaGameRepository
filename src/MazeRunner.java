@@ -9,6 +9,11 @@ public class MazeRunner {
     public int PlayerRow = 1;
     public int PlayerColumn = 1;
 
+    public int stepsTaken = 0;
+
+    long startTime; // Using long ensures you can store large millisecond values.
+    long endTime;
+
     Scanner myObj = new Scanner(System.in); // Scanner is a class so we need to make an object first to use it. It
                                             // acts like a reader that listens to what the user types into the
                                             // keyboard.
@@ -83,12 +88,16 @@ public class MazeRunner {
 
         if (MoveDirection.equals("W")) {
             PlayerRow = PlayerRow - 1; // Up
+            stepsTaken += 1;
         } else if (MoveDirection.equals("A")) {
             PlayerColumn = PlayerColumn - 1; // Left
+            stepsTaken += 1;
         } else if (MoveDirection.equals("S")) {
             PlayerRow = PlayerRow + 1; // Down
+            stepsTaken += 1;
         } else if (MoveDirection.equals("D")) {
             PlayerColumn = PlayerColumn + 1; // Right
+            stepsTaken += 1;
         }
         if (!MazeArray[PlayerRow][PlayerColumn].equals("E")) { // P will only be placed if it is not on E. Because if P
                                                                // is placed on E, player won method will never be able
@@ -100,6 +109,7 @@ public class MazeRunner {
     }
 
     public String hasPlayerWon() {
+
         if (MazeArray[PlayerRow][PlayerColumn].equals("E")) {
             return "You have Won!";
         } else {
@@ -115,7 +125,18 @@ public class MazeRunner {
 
     }
 
+    public void displayResults() {
+        endTime = (System.currentTimeMillis() - startTime) / 1000; // This will convert it into seconds.
+        System.out.print("The number of steps taken:" + stepsTaken);
+        System.out.print("Time played:" + endTime + " seconds");
+    }
+
     public void playGame() {
+
+        // Timer:
+        startTime = System.currentTimeMillis(); // System.currentTimeMillis() returns the current time in milliseconds
+                                                // stored in startTime.
+
         inititalizeMaze(); // We need to initialize the maze first as it needs to exist before we can make
                            // a move.
 
@@ -127,6 +148,7 @@ public class MazeRunner {
 
             if (QuitChoice.toUpperCase().equals("Q")) {
                 System.out.print(exitGame());
+                displayResults();
                 break;
 
             }
@@ -144,6 +166,7 @@ public class MazeRunner {
                     movePlayer("W");
                     if (hasPlayerWon().equals("You have Won!")) {
                         System.out.println("You have Won!");
+                        displayResults();
                         break;
                     }
                     printMaze();
@@ -161,6 +184,7 @@ public class MazeRunner {
                     movePlayer("A");
                     if (hasPlayerWon().equals("You have Won!")) {
                         System.out.println("You have Won!");
+                        displayResults();
                         break;
                     }
                     printMaze();
@@ -178,6 +202,7 @@ public class MazeRunner {
                     movePlayer("S");
                     if (hasPlayerWon().equals("You have Won!")) {
                         System.out.println("You have Won!");
+                        displayResults();
                         break;
                     }
                     printMaze();
@@ -194,6 +219,7 @@ public class MazeRunner {
                     movePlayer("D");
                     if (hasPlayerWon().equals("You have Won!")) {
                         System.out.println("You have Won!");
+                        displayResults();
                         break;
                     }
                     printMaze();
