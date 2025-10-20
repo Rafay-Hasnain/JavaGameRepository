@@ -14,6 +14,8 @@ public class MazeRunner {
     long startTime; // Using long ensures you can store large millisecond values.
     long endTime;
 
+    int highScore; // To store the high score depending upon the time taken to reach exit.
+
     Scanner myObj = new Scanner(System.in); // Scanner is a class so we need to make an object first to use it. It
                                             // acts like a reader that listens to what the user types into the
                                             // keyboard.
@@ -127,8 +129,21 @@ public class MazeRunner {
 
     public void displayResults() {
         endTime = (System.currentTimeMillis() - startTime) / 1000; // This will convert it into seconds.
-        System.out.print("The number of steps taken:" + stepsTaken);
-        System.out.print("Time played:" + endTime + " seconds");
+        System.out.println("The number of steps taken:" + stepsTaken);
+        System.out.println("Time played:" + endTime + " seconds");
+    }
+
+    public void showInstructions() {
+        System.out.println("Instructions");
+        System.out.println("Reach the exit in the least amount of time for maximum score!");
+        System.out.println("Press 'W' to move up");
+        System.out.println("Press 'A' to move left");
+        System.out.println("Press 'S' to move down");
+        System.out.println("Press 'D' to move right");
+    }
+
+    public void showCredits() {
+        System.out.println("Created by Rafay Hasnain");
     }
 
     public void playGame() {
@@ -139,94 +154,44 @@ public class MazeRunner {
 
         inititalizeMaze(); // We need to initialize the maze first as it needs to exist before we can make
                            // a move.
+        printMaze();
 
-        while (!MazeArray[PlayerRow][PlayerColumn].equals("E")) {
+        boolean running = true;
+        while (running) {
 
             // To quit the game:
-            System.out.print("Press 'Q' to quit the game or any other key to continue:");
-            String QuitChoice = myObj.nextLine();
+            System.out.print("Press 'Q' to quit the game or W/A/S/D to move the player:");
+            String Choice = myObj.nextLine().toUpperCase();
 
-            if (QuitChoice.toUpperCase().equals("Q")) {
+            if (Choice.equals("Q")) {
                 System.out.print(exitGame());
                 displayResults();
-                break;
+                running = false;
 
             }
 
-            // Enter a letter for the next move:
-            System.out.print("Enter a letter to move character:");
-            String LetterChoice = myObj.nextLine();
+            else if (Choice.equals("W") || Choice.equals("A") || Choice.equals("S") || Choice.equals("D")) {
 
-            if (LetterChoice.toUpperCase().equals("W")) {
-
-                if (isValidMove("W").equals("Hit a wall")) {
+                if (isValidMove(Choice).equals("Hit a wall")) {
                     System.out.println("Hit a wall");
+                    printMaze();
                 } else {
+                    movePlayer(Choice);
+                    printMaze();
                     System.out.println("Moved");
-                    movePlayer("W");
+
                     if (hasPlayerWon().equals("You have Won!")) {
                         System.out.println("You have Won!");
                         displayResults();
-                        break;
+                        running = false;
                     }
-                    printMaze();
+
                 }
+            }
 
-            } else if (LetterChoice.toUpperCase().equals("A")) {
-
-                if (isValidMove("A").equals("Hit a wall")) {
-                    System.out.println("Hit a wall");
-                    printMaze();
-                }
-
-                else {
-                    System.out.println("Moved");
-                    movePlayer("A");
-                    if (hasPlayerWon().equals("You have Won!")) {
-                        System.out.println("You have Won!");
-                        displayResults();
-                        break;
-                    }
-                    printMaze();
-                }
-
-            } else if (LetterChoice.toUpperCase().equals("S")) {
-
-                if (isValidMove("S").equals("Hit a wall")) {
-                    System.out.println("Hit a wall");
-                    printMaze();
-                }
-
-                else {
-                    System.out.println("Moved");
-                    movePlayer("S");
-                    if (hasPlayerWon().equals("You have Won!")) {
-                        System.out.println("You have Won!");
-                        displayResults();
-                        break;
-                    }
-                    printMaze();
-                }
-
-            } else if (LetterChoice.toUpperCase().equals("D")) {
-                if (isValidMove("D").equals("Hit a wall")) {
-                    System.out.println("Hit a wall");
-                    printMaze();
-                }
-
-                else {
-                    System.out.println("Moved");
-                    movePlayer("D");
-                    if (hasPlayerWon().equals("You have Won!")) {
-                        System.out.println("You have Won!");
-                        displayResults();
-                        break;
-                    }
-                    printMaze();
-                }
-
-            } else {
+            else {
                 System.out.print("Invalid Entry");
+                printMaze();
             }
         }
 
@@ -236,27 +201,38 @@ public class MazeRunner {
 
         MazeRunner game = new MazeRunner(); // Object
 
-        // Making the main menu:
-        System.out.print("Enter a choice:");
-        int choice = game.myObj.nextInt(); // Reads the number.
-        game.myObj.nextLine(); // Reads the leftover newline (we need to erase it) so that String LetterChoice
-        // = myObj.nextLine(); reads the actual letter instead of the new line which
-        // will result in invalid entry (notebook analogy).
+        System.out.println("Press '1' to start the game");
+        System.out.println("Press '2' to see the instructions");
+        System.out.println("Press '3' to show the credits");
+        System.out.println("Press '4' to show the high score");
+        System.out.println("Press '5' to exit");
 
-        if (choice == 1) {
-            System.out.print("Play Game");
-        } else if (choice == 2) {
-            System.out.print("Instructions");
-        } else if (choice == 3) {
-            System.out.print("Credits");
-        } else if (choice == 4) {
-            System.out.print("High Score");
-        } else if (choice == 5) {
-            System.out.print("Exit");
-        } else {
-            System.out.print("You entered the wrong value!");
+        boolean running = true;
+        while (running) {
+            // Making the main menu:
+            System.out.print("Press '1' to play game or 2/3/4/5 (5 to exit):");
+            int choice = game.myObj.nextInt(); // Reads the number.
+            game.myObj.nextLine(); // Reads the leftover newline (we need to erase it) so that String LetterChoice
+            // = myObj.nextLine(); reads the actual letter instead of the new line which
+            // will result in invalid entry (notebook analogy).
+
+            if (choice == 1) {
+                game.playGame();
+                ;
+            } else if (choice == 2) {
+                game.showInstructions();
+                ;
+            } else if (choice == 3) {
+                game.showCredits();
+            } else if (choice == 4) {
+                System.out.print("High Score");
+            } else if (choice == 5) {
+                System.out.print("Exiting");
+                running = false;
+            } else {
+                System.out.print("You entered the wrong value!");
+            }
+
         }
-
-        game.playGame();
     }
 }
